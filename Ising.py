@@ -106,7 +106,7 @@ def _(mo):
     By varying temperature $T$, we can observe a **phase transition**
     near the critical Curie temperature $T_c \\approx 2.27$.
 
-    Below $T_c$, the system tends towards ordered states, and we tend to see magnetism (the magnetisation over time tends to $\pm 1$).
+    Below $T_c$, the system tends towards ordered states, and we tend to see magnetism (the magnetisation over time tends to $\\pm 1$).
     
     Above $T_c$, the system is disordered, and the magnetisation fluctuates around 0.
 
