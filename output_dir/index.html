@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" href="./assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" href="./assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="./assets/Lora-VariableFont_wght-B2ootaw-.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Regular-CxL0S8W7.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Bold-D9fedIX3.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Regular-BTCkDNvf.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Medium-DU3aDxX5.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Bold-CLVRCuM9.ttf" as="font" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        var scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          var element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          var hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          var newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((entries) => {
+          setHeight();
+        });
+        resizeObserver.observe(obj.contentWindow.document.body);
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>Ising</title>
+    <script type="module" crossorigin src="./assets/index-OC46250R.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CknhX2Vy.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Warning: This file must be served by an HTTP server to function correctly.');
+        }
+    </script>
+    
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    <marimo-code hidden="">import%20marimo%0A%0A__generated_with%20%3D%20%220.15.5%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20return%20(mo%2C)%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20numpy%20as%20np%0A%20%20%20%20import%20matplotlib.pyplot%20as%20plt%0A%20%20%20%20from%20PIL%20import%20Image%0A%20%20%20%20import%20io%0A%20%20%20%20return%20np%2C%20plt%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(%0A%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20%23%20Ising%20Model%20Simulation%0A%0A%20%20%20%20This%20notebook%20simulates%20the%20**2D%20Ising%20model**%20using%20the%20**Metropolis%20algorithm**.%0A%0A%20%20%20%20The%20Ising%20model%20is%20a%20fundamental%20model%20in%20statistical%20physics%2C%0A%20%20%20%20describing%20spins%20%24s_i%20%3D%20%5C%5Cpm%201%24%20arranged%20on%20a%20lattice.%0A%20%20%20%20Spins%20interact%20with%20their%20nearest%20neighbors%2C%20and%20the%20system%0A%20%20%20%20evolves%20under%20thermal%20fluctuations.%0A%20%20%20%20%22%22%22%0A%20%20%20%20)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(%0A%20%20%20%20%20%20%20%20r%22%22%22%0A%20%20%20%20%23%23%20The%20Hamiltonian%0A%0A%20%20%20%20The%20energy%20of%20a%20spin%20configuration%20is%20given%20by%20the%20Hamiltonian%3A%0A%0A%20%20%20%20%24%24%0A%20%20%20%20H%20%3D%20-J%20%5Csum_%7B%5Clangle%20i%2C%20j%20%5Crangle%7D%20s_i%20s_j%20-%20h%20%5Csum_i%20s_i%0A%20%20%20%20%24%24%0A%0A%20%20%20%20-%20%24s_i%20%3D%20%5Cpm%201%24%20is%20the%20spin%20at%20site%20%24i%24.%20%20%0A%20%20%20%20-%20%24%5Clangle%20i%2C%20j%20%5Crangle%24%20denotes%20nearest-neighbor%20pairs%20on%20the%20lattice.%20%20%0A%20%20%20%20-%20%24J%20%3E%200%24%20favors%20alignment%20of%20neighboring%20spins%20(ferromagnetic%20case).%20%20%0A%20%20%20%20-%20%24h%24%20is%20an%20external%20magnetic%20field%20(we%20set%20%24h%3D0%24%20in%20this%20simulation).%20%20%0A%0A%20%20%20%20In%20this%20notebook%2C%20we%20simulate%20the%20**ferromagnetic%202D%20square%20lattice%20Ising%20model**%0A%20%20%20%20with%20periodic%20boundary%20conditions%20and%20%24J%20%3D%201%2C%20h%20%3D%200%24.%0A%20%20%20%20%22%22%22%0A%20%20%20%20)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(%0A%20%20%20%20%20%20%20%20r%22%22%22%0A%20%20%20%20%23%23%20The%20Metropolis%20Algorithm%0A%0A%20%20%20%20To%20simulate%20the%20thermal%20fluctuations%20at%20temperature%20%24T%24%2C%20we%20use%20the%0A%20%20%20%20**Metropolis%E2%80%93Hastings%20algorithm**%3A%0A%0A%20%20%20%201.%20Pick%20a%20random%20spin%20%24s_i%24.%20%20%0A%20%20%20%202.%20Compute%20the%20energy%20change%20%24%5CDelta%20E%24%20if%20%24s_i%24%20were%20flipped.%20%20%0A%20%20%20%203.%20If%20%24%5CDelta%20E%20%5Cleq%200%24%2C%20accept%20the%20flip.%20%20%0A%20%20%20%204.%20Otherwise%2C%20accept%20the%20flip%20with%20probability%0A%20%20%20%20%20%20%20%24%24%0A%20%20%20%20%20%20%20P%20%3D%20e%5E%7B-%5CDelta%20E%20%2F%20(k_B%20T)%7D%0A%20%20%20%20%20%20%20%24%24%0A%20%20%20%20%20%20%20(we%20set%20%24k_B%20%3D%201%24).%20%20%0A%0A%20%20%20%20Repeating%20this%20process%20constitutes%20one%20**Monte%20Carlo%20sweep**.%0A%20%20%20%20%22%22%22%0A%20%20%20%20)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(%0A%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20%23%23%20Observables%0A%0A%20%20%20%20-%20**Magnetisation**%20%20%0A%20%20%20%20%20%20%24m%20%3D%20%5C%5Cfrac%7B1%7D%7BN%7D%20%5C%5Csum_i%20s_i%24%0A%20%20%20%20%20%20where%20%24N%24%20is%20the%20total%20number%20of%20spins.%20%20%0A%0A%20%20%20%20-%20**Spin%20configuration**%20%20%0A%20%20%20%20%20%20We%20visualize%20the%20spins%20on%20the%20lattice%20as%20black%2Fwhite%20pixels.%20%20%0A%0A%20%20%20%20By%20varying%20temperature%20%24T%24%2C%20we%20can%20observe%20a%20**phase%20transition**%0A%20%20%20%20near%20the%20critical%20temperature%20%24T_c%20%5C%5Capprox%202.27%24%20for%20the%202D%20square%20lattice%20Ising%20model.%0A%20%20%20%20%22%22%22%0A%20%20%20%20)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(np)%3A%0A%20%20%20%20%23%20---%20Optimized%20Simulation%20core%20---%0A%20%20%20%20def%20run_ising(L%2C%20T%2C%20n_sweeps%2C%20frames_every%2C%20seed%3D42)%3A%0A%20%20%20%20%20%20%20%20rng%20%3D%20np.random.default_rng(seed)%0A%20%20%20%20%20%20%20%20spins%20%3D%20rng.choice(%5B1%2C%20-1%5D%2C%20size%3D(L%2C%20L))%0A%0A%20%20%20%20%20%20%20%20%23%20Precompute%20probabilities%20for%20%CE%94E%0A%20%20%20%20%20%20%20%20boltzmann%20%3D%20%7BdE%3A%20np.exp(-dE%20%2F%20T)%20for%20dE%20in%20%5B-8%2C%20-4%2C%200%2C%204%2C%208%5D%7D%0A%0A%20%20%20%20%20%20%20%20frames%2C%20mag%20%3D%20%5B%5D%2C%20%5B%5D%0A%0A%20%20%20%20%20%20%20%20for%20sweep%20in%20range(n_sweeps)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20parity%20in%20%5B0%2C%201%5D%3A%20%20%23%20checkerboard%20update%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20Build%20mask%20for%20sublattice%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20mask%20%3D%20(np.indices((L%2C%20L)).sum(axis%3D0)%20%25%202%20%3D%3D%20parity)%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20Compute%20neighbor%20sum%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20nb%20%3D%20(%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20np.roll(spins%2C%201%2C%20axis%3D0)%20%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20np.roll(spins%2C%20-1%2C%20axis%3D0)%20%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20np.roll(spins%2C%201%2C%20axis%3D1)%20%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20np.roll(spins%2C%20-1%2C%20axis%3D1)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20)%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20dE%20%3D%202%20*%20spins%20*%20nb%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20Decide%20flips%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20rand%20%3D%20rng.random((L%2C%20L))%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20flip%20%3D%20(rand%20%3C%20np.vectorize(boltzmann.get)(dE))%20%26%20mask%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20spins%5Bflip%5D%20*%3D%20-1%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%23%20Track%20observables%0A%20%20%20%20%20%20%20%20%20%20%20%20mag.append(spins.mean())%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20sweep%20%25%20frames_every%20%3D%3D%200%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20frames.append(spins.copy())%0A%0A%20%20%20%20%20%20%20%20return%20%7B%22frames%22%3A%20frames%2C%20%22mag%22%3A%20mag%7D%0A%20%20%20%20return%20(run_ising%2C)%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20controls%20%3D%20mo.ui.dictionary(%7B%0A%20%20%20%20%20%20%20%20%22L%22%3A%20mo.ui.slider(16%2C%20128%2C%20value%3D64%2C%20label%3D%22System%20size%20L%22%2C%20debounce%3DTrue)%2C%0A%20%20%20%20%20%20%20%20%22T%22%3A%20mo.ui.slider(1.0%2C%204.0%2C%20step%3D0.05%2C%20value%3D2.27%2C%20label%3D%22Temperature%20T%22%2C%20debounce%3DTrue)%2C%0A%20%20%20%20%20%20%20%20%22n_sweeps%22%3A%20mo.ui.slider(100%2C%202000%2C%20step%3D100%2C%20value%3D800%2C%20label%3D%22Number%20of%20sweeps%22%2C%20debounce%3DTrue)%2C%0A%20%20%20%20%20%20%20%20%22frames_every%22%3A%20mo.ui.slider(1%2C%2020%2C%20value%3D4%2C%20label%3D%22Frame%20interval%22%2C%20debounce%3DTrue)%2C%0A%20%20%20%20%20%20%20%20%22seed%22%3A%20mo.ui.number(0%2C%20label%3D%22Random%20seed%22%2C%20value%3D42)%2C%0A%20%20%20%20%7D)%0A%20%20%20%20controls%0A%20%20%20%20return%20(controls%2C)%0A%0A%0A%40app.cell%0Adef%20_(controls)%3A%0A%20%20%20%20L%20%3D%20controls.value%5B%22L%22%5D%0A%20%20%20%20T%20%3D%20controls.value%5B%22T%22%5D%0A%20%20%20%20n_sweeps%20%3D%20controls.value%5B%22n_sweeps%22%5D%0A%20%20%20%20frames_every%20%3D%20controls.value%5B%22frames_every%22%5D%0A%20%20%20%20seed%20%3D%20controls.value%5B%22seed%22%5D%0A%20%20%20%20return%20L%2C%20T%2C%20frames_every%2C%20n_sweeps%2C%20seed%0A%0A%0A%40app.cell%0Adef%20_(L%2C%20T%2C%20frames_every%2C%20n_sweeps%2C%20run_ising%2C%20seed)%3A%0A%20%20%20%20simulation%20%3D%20run_ising(L%2C%20T%2C%20n_sweeps%2C%20frames_every%2C%20seed)%0A%20%20%20%20return%20(simulation%2C)%0A%0A%0A%40app.cell%0Adef%20_(plt%2C%20simulation)%3A%0A%20%20%20%20mag%20%3D%20simulation%5B%22mag%22%5D%0A%20%20%20%20%23%20Magnetization%20plot%0A%20%20%20%20fig2%2C%20ax2%20%3D%20plt.subplots()%0A%20%20%20%20ax2.plot(mag)%0A%20%20%20%20ax2.set_xlabel(%22Sweep%22)%0A%20%20%20%20ax2.set_ylabel(%22Magnetisation%20per%20spin%22)%0A%20%20%20%20ax2.set_title(%22Magnetisation%20over%20time%22)%0A%20%20%20%20ax2%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo%2C%20simulation)%3A%0A%20%20%20%20frames%20%3D%20simulation%5B%22frames%22%5D%0A%0A%20%20%20%20time%20%3D%20mo.ui.slider(0%2C%20len(frames)-1%2C%201%2C%20label%3D%22FrameNo%22)%0A%20%20%20%20time%0A%20%20%20%20return%20frames%2C%20time%0A%0A%0A%40app.cell%0Adef%20_(frames%2C%20plt%2C%20time)%3A%0A%20%20%20%20%23%20Final%20configuration%0A%20%20%20%20fig1%2C%20ax1%20%3D%20plt.subplots()%0A%20%20%20%20ax1.imshow(frames%5Btime.value%5D%2C%20cmap%3D%22gray%22%2C%20interpolation%3D%22nearest%22)%0A%20%20%20%20ax1.set_title(f%22Lattice%20at%20frame%20%7Btime.value%7D%22)%0A%20%20%20%20ax1.axis(%22off%22)%0A%20%20%20%20ax1%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a portal for the data editor to render in -->
+    <div id="portal" data-testid="glide-portal" style="position: fixed; left: 0; top: 0; z-index: 9999"></div>
+    <script data-marimo="true">
+      window.__MARIMO_MOUNT_CONFIG__ = {
+            "filename": "notebook.py",
+            "mode": "read",
+            "version": "0.15.5",
+            "serverToken": "unused",
+            "config": {"ai": {"models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "copilot": false}, "display": {"cell_output": "above", "code_editor_font_size": 14, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": false, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": true}}, "package_management": {"manager": "pip"}, "runtime": {"auto_instantiate": true, "auto_reload": "off", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null,
+        };
+    </script>
+  </body>
+</html>
