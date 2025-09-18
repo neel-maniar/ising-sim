@@ -5,21 +5,6 @@ app = marimo.App(width="medium")
 
 
 @app.cell
-def _():
-    import marimo as mo
-    return (mo,)
-
-
-@app.cell
-def _():
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from PIL import Image
-    import io
-    return np, plt
-
-
-@app.cell
 def _(mo):
     mo.md(
         """
@@ -105,6 +90,63 @@ def _(mo):
 
 
 @app.cell
+def _(mo):
+    controls = mo.ui.dictionary({
+        "L": mo.ui.slider(16, 128, value=64, label="System size L", debounce=True),
+        "T": mo.ui.slider(1.0, 4.0, step=0.05, value=2.27, label="Temperature T", debounce=True),
+        "n_sweeps": mo.ui.slider(100, 2000, step=100, value=800, label="Number of sweeps", debounce=True),
+        "frames_every": mo.ui.slider(1, 20, value=4, label="Frame interval", debounce=True),
+        "seed": mo.ui.number(0, label="Random seed", value=42),
+    })
+    controls
+    return (controls,)
+
+
+@app.cell
+def _(frames, plt, time):
+    # Final configuration
+    fig1, ax1 = plt.subplots()
+    ax1.imshow(frames[time.value], cmap="gray", interpolation="nearest")
+    ax1.set_title(f"Lattice at frame {time.value}")
+    ax1.axis("off")
+    ax1
+    return
+
+
+@app.cell
+def _(mo, simulation):
+    frames = simulation["frames"]
+
+    time = mo.ui.slider(0, len(frames)-1, 1, label="FrameNo")
+    time
+    return frames, time
+
+
+@app.cell
+def _(plt, simulation):
+    mag = simulation["mag"]
+    # Magnetization plot
+    fig2, ax2 = plt.subplots()
+    ax2.plot(mag)
+    ax2.set_xlabel("Sweep")
+    ax2.set_ylabel("Magnetisation per spin")
+    ax2.set_title("Magnetisation over time")
+    ax2
+    return
+
+
+
+@app.cell
+def _():
+    import marimo as mo
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from PIL import Image
+    import io
+    return mo, np, plt
+
+
+@app.cell
 def _(np):
     # --- Optimized Simulation core ---
     def run_ising(L, T, n_sweeps, frames_every, seed=42):
@@ -146,19 +188,6 @@ def _(np):
 
 
 @app.cell
-def _(mo):
-    controls = mo.ui.dictionary({
-        "L": mo.ui.slider(16, 128, value=64, label="System size L", debounce=True),
-        "T": mo.ui.slider(1.0, 4.0, step=0.05, value=2.27, label="Temperature T", debounce=True),
-        "n_sweeps": mo.ui.slider(100, 2000, step=100, value=800, label="Number of sweeps", debounce=True),
-        "frames_every": mo.ui.slider(1, 20, value=4, label="Frame interval", debounce=True),
-        "seed": mo.ui.number(0, label="Random seed", value=42),
-    })
-    controls
-    return (controls,)
-
-
-@app.cell
 def _(controls):
     L = controls.value["L"]
     T = controls.value["T"]
@@ -172,44 +201,6 @@ def _(controls):
 def _(L, T, frames_every, n_sweeps, run_ising, seed):
     simulation = run_ising(L, T, n_sweeps, frames_every, seed)
     return (simulation,)
-
-
-@app.cell
-def _(plt, simulation):
-    mag = simulation["mag"]
-    # Magnetization plot
-    fig2, ax2 = plt.subplots()
-    ax2.plot(mag)
-    ax2.set_xlabel("Sweep")
-    ax2.set_ylabel("Magnetisation per spin")
-    ax2.set_title("Magnetisation over time")
-    ax2
-    return
-
-
-@app.cell
-def _(mo, simulation):
-    frames = simulation["frames"]
-
-    time = mo.ui.slider(0, len(frames)-1, 1, label="FrameNo")
-    time
-    return frames, time
-
-
-@app.cell
-def _(frames, plt, time):
-    # Final configuration
-    fig1, ax1 = plt.subplots()
-    ax1.imshow(frames[time.value], cmap="gray", interpolation="nearest")
-    ax1.set_title(f"Lattice at frame {time.value}")
-    ax1.axis("off")
-    ax1
-    return
-
-
-@app.cell
-def _():
-    return
 
 
 if __name__ == "__main__":
