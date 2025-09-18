@@ -6,12 +6,10 @@ app = marimo.App(width="medium")
 
 @app.cell
 def _(mo):
-    mo.md(
-        """
-    # Ising Model Simulation
-    """)
+    mo.md("""# Ising Model Simulation""")
     return
-    
+
+
 @app.cell
 def _(mo):
     mo.accordion(
@@ -25,9 +23,10 @@ def _(mo):
     4. So there is this battle between the energy, that wants **order**, and entropy, that wants **chaos**. And temperature is a parameter that controls this balance
     5. Below a certain critical *"Curie"* temperature, we get total order - **magnetism**. Above this temperature, we get total chaos - **demagnetisation**
     6. Exactly at this temperature, we get very weird phenomena!
-""")}
+    """)}
         )
-    return 
+    return
+
 
 @app.cell
 def _(mo):
@@ -107,7 +106,7 @@ def _(mo):
     near the critical Curie temperature $T_c \\approx 2.27$.
 
     Below $T_c$, the system tends towards ordered states, and we tend to see magnetism (the magnetisation over time tends to $\\pm 1$).
-    
+
     Above $T_c$, the system is disordered, and the magnetisation fluctuates around 0.
 
     At $T_c$, we see large fluctuations and complex domain structures. This is a hallmark of critical phenomena.
@@ -160,7 +159,6 @@ def _(plt, simulation):
     ax2.set_title("Magnetisation over time")
     ax2
     return
-
 
 
 @app.cell
