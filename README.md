@@ -10,5 +10,5 @@ You can adjust parameters such as lattice size, temperature, and number of sweep
 I recommend using [uv](https://github.com/astral-sh/uv) for fast, isolated Python environments.
 
 ```bash
-uv run Ising.py
+uv run marimo run Ising.py
 ```
