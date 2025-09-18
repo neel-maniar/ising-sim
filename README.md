@@ -7,7 +7,7 @@ You can adjust parameters such as lattice size, temperature, and number of sweep
 
 ## 🔧 Installation (with uv)
 
-We recommend using [uv](https://github.com/astral-sh/uv) for fast, isolated Python environments.
+I recommend using [uv](https://github.com/astral-sh/uv) for fast, isolated Python environments.
 
 ```bash
 uv run Ising.py
