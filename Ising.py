@@ -9,13 +9,36 @@ def _(mo):
     mo.md(
         """
     # Ising Model Simulation
+    """)
+    return
+    
+@app.cell
+def _(mo):
+    mo.accordion(
+        {"tl;dr": mo.md("""
+    tl;dr:
+    Turns out that magnets lose their magnetism when heated up above a certain temperature, and this happens very suddenly. This is an example of a critical point, or a state change. Let's model it.
 
+    1. Magnets are made of small magnets. Say these small magnets can only align up or down, and call this property "spin: {-1,1}"
+    2. The small magnets like to be the same orientation as their neighbours - it lowers the energy of the system. When everything aligns, we get magnetism.
+    3. Higher temperatures lend themselves to more random "higher entropy" states
+    4. So there is this battle between the energy, that wants **order**, and entropy, that wants **chaos**. And temperature is a parameter that controls this balance
+    5. Below a certain critical *"Curie"* temperature, we get total order - **magnetism**. Above this temperature, we get total chaos - **demagnetisation**
+    6. Exactly at this temperature, we get very weird phenomena!
+""")}
+        )
+    return 
+
+@app.cell
+def _(mo):
+    mo.md(
+        """
     This notebook simulates the **2D Ising model** using the **Metropolis algorithm**.
 
     The Ising model is a fundamental model in statistical physics,
     describing spins $s_i = \\pm 1$ arranged on a lattice.
     Spins interact with their nearest neighbors, and the system
-    evolves under thermal fluctuations.
+    evolves under thermal fluctuations. This can be used to model magnets! Experiment with the parameters below and see how the system evolves.
     """
     )
     return
@@ -23,6 +46,7 @@ def _(mo):
 
 @app.cell
 def _(mo):
+    mo.accordion({"Hamiltonian":
     mo.md(
         r"""
     ## The Hamiltonian
@@ -41,12 +65,13 @@ def _(mo):
     In this notebook, we simulate the **ferromagnetic 2D square lattice Ising model**
     with periodic boundary conditions and $J = 1, h = 0$.
     """
-    )
+    )})
     return
 
 
 @app.cell
 def _(mo):
+    mo.accordion({"Metropolis Algorithm":
     mo.md(
         r"""
     ## The Metropolis Algorithm
@@ -61,7 +86,7 @@ def _(mo):
 
     Repeating this process constitutes one **Monte Carlo sweep**.
     """
-    )
+    )})
     return
 
 
@@ -79,7 +104,13 @@ def _(mo):
       We visualize the spins on the lattice as black/white pixels.  
 
     By varying temperature $T$, we can observe a **phase transition**
-    near the critical temperature $T_c \\approx 2.27$ for the 2D square lattice Ising model.
+    near the critical Curie temperature $T_c \\approx 2.27$.
+
+    Below $T_c$, the system tends towards ordered states, and we tend to see magnetism (the magnetisation over time tends to $\pm 1$).
+    
+    Above $T_c$, the system is disordered, and the magnetisation fluctuates around 0.
+
+    At $T_c$, we see large fluctuations and complex domain structures. This is a hallmark of critical phenomena.
     """
     )
     return
