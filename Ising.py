@@ -57,11 +57,7 @@ def _(mo):
     1. Pick a random spin $s_i$.  
     2. Compute the energy change $\Delta E$ if $s_i$ were flipped.  
     3. If $\Delta E \leq 0$, accept the flip.  
-    4. Otherwise, accept the flip with probability
-       $$
-       P = e^{-\Delta E / (k_B T)}
-       $$
-       (we set $k_B = 1$).  
+    4. Otherwise, accept the flip with probability $P = e^{-\Delta E / (k_B T)}$ (we set $k_B = 1$).  
 
     Repeating this process constitutes one **Monte Carlo sweep**.
     """
